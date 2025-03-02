@@ -1,7 +1,7 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify  # type: ignore
 import os
 import random
-from Crypto.Cipher import DES3
+from Crypto.Cipher import DES3  # type: ignore
 
 app = Flask(__name__)
 
@@ -46,14 +46,27 @@ class Functional_Des:
 
 chall = Functional_Des()
 
+@app.route("/")
+def home():
+    return "Hello, Flask is running!"
+
 @app.route("/challenge", methods=["GET"])
 def fetch_challenge():
     return jsonify({"challenge": chall.get_challenge().hex()})
 
+# @app.route("/decrypt", methods=["POST"])
+# def decrypt():
+#     ct = bytes.fromhex(request.json.get("ciphertext"))
+#     return jsonify({"plaintext": chall.decrypt(ct).hex()})
+
+
 @app.route("/decrypt", methods=["POST"])
 def decrypt():
     ct = bytes.fromhex(request.json.get("ciphertext"))
-    return jsonify({"plaintext": chall.decrypt(ct).hex()})
+    print("Received ciphertext:", ct.hex())  # Debugging output
+    plaintext = chall.decrypt(ct)
+    print("Decrypted plaintext:", plaintext.hex())  # Debugging output
+    return jsonify({"plaintext": plaintext.hex()})
 
 @app.route("/verify", methods=["POST"])
 def verify():
