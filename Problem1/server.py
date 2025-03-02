@@ -1,7 +1,7 @@
-from flask import Flask, request, jsonify  # type: ignore
+from flask import Flask, request, jsonify  
 import os
 import random
-from Crypto.Cipher import DES3  # type: ignore
+from Crypto.Cipher import DES3  
 
 app = Flask(__name__)
 
@@ -54,10 +54,6 @@ def home():
 def fetch_challenge():
     return jsonify({"challenge": chall.get_challenge().hex()})
 
-# @app.route("/decrypt", methods=["POST"])
-# def decrypt():
-#     ct = bytes.fromhex(request.json.get("ciphertext"))
-#     return jsonify({"plaintext": chall.decrypt(ct).hex()})
 
 
 @app.route("/decrypt", methods=["POST"])
